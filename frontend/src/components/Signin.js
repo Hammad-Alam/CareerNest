@@ -52,7 +52,7 @@ function Signin(props) {
       } else if (json.success) {
         localStorage.setItem("token", json.authToken);
         props.handleAlert("Logged in Successfully!", "success");
-        navigate("/user-profile");
+        navigate("/user-profile/jobs");
       } else {
         props.handleAlert("Please enter correct credentials.", "danger");
       }

@@ -9,7 +9,8 @@ const ApplicationSchema = new Schema({
   experience: { type: String, required: true },
   education: { type: String, required: true },
   linkedin: { type: String, required: true },
-  resume: { type: String, required: true },
+  portfolio: { type: String, required: true },
+  postedAt: { type: Date, default: Date.now },
 });
 
 const Applications = mongoose.model("application", ApplicationSchema);

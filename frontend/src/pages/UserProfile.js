@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import Input from "../components/Input";
-import FileInput from "../components/FileInput";
 import Button from "../components/Button";
 
 function UserProfile(props) {
@@ -185,24 +184,6 @@ function UserProfile(props) {
               disabled={disabled}
               className={"mb-4"}
               onChange={onChange}
-            />
-          </div>
-        </div>
-        <div className="lg:flex lg:flex-row">
-          <div className="lg:w-1/2">
-            <FileInput
-              id="profilePicture"
-              label="Profile Picture"
-              name="profilePicture"
-              disabled={disabled}
-            />
-          </div>
-          <div className="lg:w-1/2">
-            <FileInput
-              id="resume"
-              label="Resume"
-              name="resume"
-              disabled={disabled}
             />
           </div>
         </div>

@@ -70,7 +70,7 @@ function AdminDashboard(props) {
         <DashboardCard
           icon={<Briefcase size={20} />}
           heading={"Total Applications"}
-          count={2}
+          count={dashboardStats.totalApplications}
         />
       </div>
     </div>

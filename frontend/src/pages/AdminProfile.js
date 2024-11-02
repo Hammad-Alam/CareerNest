@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import Input from "../components/Input";
-import FileInput from "../components/FileInput";
 import Button from "../components/Button";
 
 function AdminProfile(props) {
@@ -39,7 +38,6 @@ function AdminProfile(props) {
           // Update data state here
           name: userData.name,
           email: userData.email,
-          profilePicture: "",
           bio: userData.bio,
         });
       } catch (error) {
@@ -152,13 +150,6 @@ function AdminProfile(props) {
             label="Email"
             disabled={disabled}
             onChange={onChange}
-          />
-          <FileInput
-            id="profilePicture"
-            label="Profile Picture"
-            name="profilePicture"
-            className="w-full"
-            disabled={disabled}
           />
           <Input
             type="Bio"

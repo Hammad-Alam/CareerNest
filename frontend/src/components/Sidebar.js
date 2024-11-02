@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import SidebarItem from "../components/SidebarItem";
 import Logo from "../assets/logo.PNG";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faFileContract } from "@fortawesome/free-solid-svg-icons";
 import { LayoutDashboard, Briefcase, User, LogOut, Lock } from "lucide-react";
 
 function Sidebar({ role, handleLogout }) {
@@ -45,13 +45,17 @@ function Sidebar({ role, handleLogout }) {
           <SidebarItem
             icon={<LayoutDashboard size={20} />}
             text={"Dashboard"}
-            to={role === "admin" ? "/admin-profile" : "/user-profile"}
+            to={role === "admin" ? "/admin-profile" : "/user-profile/jobs"}
           />
-          <SidebarItem
-            icon={<Briefcase size={20} />}
-            text={role === "admin" ? "Job Listings" : "Jobs"}
-            to={role === "admin" ? "/admin-profile/jobs" : "/user-profile/jobs"}
-          />
+          {role === "admin" ? (
+            <SidebarItem
+              icon={<Briefcase size={20} />}
+              text={"Job Listings"}
+              to={"/admin-profile/jobs"}
+            />
+          ) : (
+            ""
+          )}
           <li>
             <button
               className="flex items-center w-full py-2 px-[10px] hover:bg-indigo-50 hover:rounded-md"
@@ -95,6 +99,17 @@ function Sidebar({ role, handleLogout }) {
                   }
                 />
               </ul>
+            )}
+            {role === "admin" ? (
+              <SidebarItem
+                icon={
+                  <FontAwesomeIcon icon={faFileContract} className="mt-1" />
+                }
+                text={"Applications"}
+                to={"/admin-profile/application"}
+              />
+            ) : (
+              ""
             )}
           </li>
           <SidebarItem

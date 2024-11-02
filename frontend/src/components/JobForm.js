@@ -5,92 +5,86 @@ import Button from "./Button";
 
 function JobForm(props) {
   const [data, setData] = useState({
-    title: "",
-    description: "",
-    category: "",
-    location: "",
-    salary: "",
+    name: "",
+    email: "",
+    phone: "",
+    position: "",
     experience: "",
-    jobType: "",
-    skills: "",
+    education: "",
+    linkedin: "",
+    portfolio: "",
   });
 
-  const addJob = async () => {
+  const handleApplication = async () => {
     // Check if all fields are filled
     if (
-      !data.title ||
-      !data.description ||
-      !data.category ||
-      !data.location ||
-      !data.salary ||
+      !data.name ||
+      !data.email ||
+      !data.phone ||
+      !data.position ||
       !data.experience ||
-      !data.jobType ||
-      !data.skills ||
-      !data.status
+      !data.education ||
+      !data.linkedin ||
+      !data.portfolio
     ) {
-      console.error("Please fill in all fields.");
-    }
-
-    // Check if the title is valid
-    if (data.title.length < 3) {
-      console.error("Title must be at least 3 characters");
+      props.handleAlert("Please fill in all fields.", "danger");
       return;
     }
 
-    // Check if the description is valid
-    if (data.description.length < 25) {
-      console.error("Description must be at least 25 characters");
+    // Validate name
+    if (data.name.length < 3) {
+      props.handleAlert("Name must be at least 3 characters", "danger");
       return;
     }
 
-    // Check if location is valid
-    if (data.location.length < 2) {
-      console.error("Location must be at least 2 characters");
+    // Validate email
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(data.email)) {
+      props.handleAlert("Invalid email address", "danger");
       return;
     }
 
-    // Validate the salary format
-    if (!/^[A-Za-z]+\s?\d+,?\d*/.test(data.salary)) {
-      console.error("Salary must be in format 'RS 10000'");
+    // Validate phone
+    if (data.phone.length < 11) {
+      props.handleAlert("Phone number must be at least 11 digits", "danger");
       return;
     }
 
-    // Validate the experience format
+    // Validate experience
     if (!/^\d+\+?\s?years?$/i.test(data.experience)) {
-      console.error("Experience must be in format '2+ years'");
+      props.handleAlert("Experience must be in format '2+ years'", "danger");
       return;
     }
 
-    // Check if job type is valid
-    if (
-      !["Full-time", "Part-time", "Internship", "Contract"].includes(
-        data.jobType
-      )
-    ) {
-      console.error("Invalid job type");
+    // Validate LinkedIn & Portfolio URL
+    const urlRegex = /^https?:\/\/.+/;
+    if (!urlRegex.test(data.linkedin || data.portfolio)) {
+      props.handleAlert("Invalid URL", "danger");
       return;
     }
 
     // Proceed with API Call
     try {
-      const response = await fetch("http://localhost:5000/api/job/createjob", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "auth-token": localStorage.getItem("token"),
-        },
-        body: JSON.stringify({
-          title: data.title,
-          description: data.description,
-          category: data.category,
-          location: data.location,
-          salary: data.salary,
-          experience: data.experience,
-          jobType: data.jobType,
-          skills: data.skills.split(",") || [], // Convert skills to an array
-          status: data.status,
-        }),
-      });
+      const response = await fetch(
+        "http://localhost:5000/api/application/createapplication",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "auth-token": localStorage.getItem("token"),
+          },
+          body: JSON.stringify({
+            name: data.name,
+            email: data.email,
+            phone: data.phone,
+            position: data.position,
+            experience: data.experience,
+            education: data.education,
+            linkedin: data.linkedin,
+            portfolio: data.portfolio,
+          }),
+        }
+      );
 
       if (!response.ok) {
         console.error("Bad request:", response.status);
@@ -100,22 +94,23 @@ function JobForm(props) {
       const json = await response.json();
 
       if (json) {
-        console.log("Job Added successfully.");
+        props.handleAlert(
+          "Your application has been submitted successfully.",
+          "success"
+        );
         setData({
-          title: "",
-          description: "",
-          category: "",
-          location: "",
+          name: "",
+          email: "",
+          phone: "",
+          position: "",
           experience: "",
-          salary: "",
-          jobType: "",
-          skills: "",
-          status: "",
+          education: "",
+          linkedin: "",
+          portfolio: "",
         });
       }
-      props.handleFormSubmission();
     } catch (error) {
-      console.error("Error adding job:", error);
+      props.handleAlert("Error adding application:", "danger");
     }
   };
 
@@ -123,16 +118,9 @@ function JobForm(props) {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
-  const apply = () => {
-    props.handleAlert(
-      "Your Job Application has been successfully submitted.",
-      "success"
-    );
-  };
-
   return (
     <div
-      className="mx-2 xsm:mx-auto justify-center items-center pb-4 text-center my-16 lg:my-0 sm:w-1/2 md:w-9/12 xl:w-1/2 rounded-xl border-2 border-gray-300"
+      className="mx-2 xsm:mx-auto justify-center items-center pb-4 text-center my-16 md:my-5 sm:w-1/2 md:w-9/12 xl:w-1/2 rounded-xl border-2 border-gray-300"
       style={{
         boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
         height: "80vh",
@@ -147,7 +135,7 @@ function JobForm(props) {
           name="name"
           label="Name"
           onChange={onChange}
-          value={data.title}
+          value={data.name}
         />
         <Input
           type="email"
@@ -155,23 +143,23 @@ function JobForm(props) {
           name="email"
           label="Email"
           onChange={onChange}
-          value={data.category}
+          value={data.email}
         />
         <Input
           type="text"
-          id="phoneNo"
-          name="phoneNo"
+          id="phone"
+          name="phone"
           label="Phone Number"
           onChange={onChange}
-          value={data.location}
+          value={data.phone}
         />
         <Input
           type="text"
-          id="jobTitle"
-          name="jobTitle"
+          id="position"
+          name="position"
           label="Position Applied For"
           onChange={onChange}
-          value={data.salary}
+          value={data.position}
         />
         <Input
           type="text"
@@ -187,7 +175,7 @@ function JobForm(props) {
           name="education"
           label="Education"
           onChange={onChange}
-          value={data.jobType}
+          value={data.education}
         />
         <Input
           type="text"
@@ -195,17 +183,17 @@ function JobForm(props) {
           name="linkedin"
           label="LinkedIn Profile"
           onChange={onChange}
-          value={data.skills}
+          value={data.linkedin}
         />
         <Input
-          type="file"
-          id="resume"
-          name="resume"
-          label="Resume / CV"
+          type="text"
+          id="portfolio"
+          name="portfolio"
+          label="Portfolio Link"
           onChange={onChange}
-          value={data.status}
+          value={data.portfolio}
         />
-        <Button text={`Apply`} onClick={apply} />
+        <Button text={`Apply`} onClick={handleApplication} />
       </div>
     </div>
   );

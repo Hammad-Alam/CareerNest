@@ -1,4 +1,3 @@
-// App.js
 import "./App.css";
 import { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -15,6 +14,7 @@ import ChangePassword from "./components/ChangePassword";
 import AdminJobs from "./pages/AdminJobs";
 import UserJobs from "./pages/UserJobs";
 import JobForm from "./components/JobForm";
+import ApplicationTable from "./components/ApplicationTable";
 
 function App() {
   const [alert, setAlert] = useState(null);
@@ -85,6 +85,15 @@ function App() {
               />
             }
           />
+          <Route
+            path="application"
+            element={
+              <ApplicationTable
+                handleAlert={handleAlert}
+                setProgress={setProgress}
+              />
+            }
+          />
         </Route>
 
         <Route
@@ -94,7 +103,11 @@ function App() {
           <Route
             path="jobs"
             element={
-              <UserJobs handleAlert={handleAlert} setProgress={setProgress} />
+              <UserJobs
+                index
+                handleAlert={handleAlert}
+                setProgress={setProgress}
+              />
             }
           />
           <Route

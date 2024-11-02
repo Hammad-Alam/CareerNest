@@ -27,15 +27,23 @@ router.post(
       .matches(/^\d+\+?\s?years?$/i),
     body(
       "education",
-      "Invalid job type. Please select from: Full-time, Part-time, Internship, Contract."
+      "Invalid education level. Please select from: Bachelor's, Master's, PhD, etc."
     )
-      .trim()
-      .isIn(["Full-time", "Part-time", "Internship", "Contract"]),
-    body("linkedin", "LinkedIn profile URL is required.")
       .trim()
       .not()
       .isEmpty(),
-    body("resume", "Resume is required.").trim().not().isEmpty(),
+    body("linkedin", "Invalid LinkedIn profile URL.")
+      .trim()
+      .custom((value) => {
+        const urlRegex = /^https?:\/\/.+/;
+        return urlRegex.test(value);
+      }),
+    body("portfolio", "Invalid Portfolio URL.")
+      .trim()
+      .custom((value) => {
+        const urlRegex = /^https?:\/\/.+/;
+        return urlRegex.test(value);
+      }),
   ],
   async (req, res) => {
     // Check for validation errors
@@ -54,7 +62,7 @@ router.post(
         experience: req.body.experience,
         education: req.body.education,
         linkedin: req.body.linkedin,
-        resume: req.body.resume,
+        portfolio: req.body.portfolio,
       });
 
       // Save the application
@@ -71,5 +79,17 @@ router.post(
     }
   }
 );
+
+// Route2: Get all applications using GET "/api/application/fetchallapplication". Login required
+router.get("/fetchallapplication", verifyToken, async (req, res) => {
+  try {
+    const applications = await Applications.find();
+    res.json(applications);
+  } catch (error) {
+    // Handle any errors
+    console.error(error);
+    res.status(500).json({ message: "Error fetching all applications." });
+  }
+});
 
 module.exports = router;
