@@ -1,6 +1,8 @@
+// Import mongoose library
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
+// Define Jobs schema
 const JobSchema = new Schema({
   title: { type: String, required: true },
   description: { type: String, required: true },
@@ -30,6 +32,8 @@ const JobSchema = new Schema({
   },
 });
 
+// Create Jobs model
 const Jobs = mongoose.model("job", JobSchema);
 
+// Export Jobs model
 module.exports = Jobs;

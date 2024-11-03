@@ -1,6 +1,8 @@
+// Import mongoose library
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
+// Define Application schema
 const ApplicationSchema = new Schema({
   name: { type: String, required: true },
   email: { type: String, required: true },
@@ -13,6 +15,8 @@ const ApplicationSchema = new Schema({
   postedAt: { type: Date, default: Date.now },
 });
 
+// Create Applications model
 const Applications = mongoose.model("application", ApplicationSchema);
 
+// Export Applications model
 module.exports = Applications;
