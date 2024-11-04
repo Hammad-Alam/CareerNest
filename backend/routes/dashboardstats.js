@@ -6,9 +6,10 @@ const User = require("../models/User");
 const Applications = require("../models/Application");
 const verifyToken = require("../middleware/verifytoken");
 
-// Route1: Get Admin Dashboard stats using GET: "/api/dashboardstats/admin". Login required.
+// Route to retrieve admin dashboard statistics
 router.get("/admin", verifyToken, async (req, res) => {
   try {
+    // Retrieve dashboard statistics in parallel
     const [
       totalJobs,
       totalUsers,
@@ -21,6 +22,7 @@ router.get("/admin", verifyToken, async (req, res) => {
       User.countDocuments(),
       Jobs.countDocuments({ status: "Available" }),
       Jobs.countDocuments({ status: "Expired" }),
+      // Get top job category
       Jobs.aggregate([
         { $group: { _id: "$category", count: { $sum: 1 } } },
         { $sort: { count: -1 } },
@@ -38,7 +40,8 @@ router.get("/admin", verifyToken, async (req, res) => {
       totalApplications,
     });
   } catch (error) {
-    console.log(error.message);
+    // Handle server error
+    console.error(error);
     res.status(500).json({ message: "Error retrieving dashboard counts" });
   }
 });
