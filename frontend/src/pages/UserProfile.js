@@ -200,7 +200,17 @@ function UserProfile(props) {
           />
         </div>
       </div>
-      {!disabled && <Button text={"Save"} onClick={handleSave} />}
+      {!disabled && (
+        <Button
+          text={"Save"}
+          onClick={handleSave}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleSave();
+            }
+          }}
+        />
+      )}
     </>
   );
 }
