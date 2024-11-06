@@ -1,4 +1,7 @@
 import React from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
+AOS.init();
 
 function Alert(props) {
   const capitalize = (word) => {
@@ -10,7 +13,12 @@ function Alert(props) {
   };
 
   return (
-    <div className="h-14 relative">
+    <div
+      className="h-14 relative"
+      data-aos="fade-down"
+      data-aos-easing="linear"
+      data-aos-duration="1500"
+    >
       {props.alert && (
         <div
           className={`py-5 px-3 rounded-md 
