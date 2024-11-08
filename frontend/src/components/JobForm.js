@@ -193,7 +193,15 @@ function JobForm(props) {
           onChange={onChange}
           value={data.portfolio}
         />
-        <Button text={`Apply`} onClick={handleApplication} />
+        <Button
+          text={`Apply`}
+          onClick={handleApplication}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleApplication();
+            }
+          }}
+        />
       </div>
     </div>
   );
