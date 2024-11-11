@@ -3,11 +3,17 @@ import Button from "./Button";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import AOS from "aos";
+import "aos/dist/aos.css";
+AOS.init();
 
 const JobDetail = ({ job, onClose }) => {
   let navigate = useNavigate();
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-sm bg-opacity-40">
+    <div
+      className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-sm bg-opacity-40"
+      data-aos="flip-right"
+    >
       <div className="relative bg-white rounded-2xl shadow-xl max-w-3xl w-full mx-4 p-8 space-y-6 overflow-y-auto max-h-[60vh] md:max-h-[90vh]">
         <button
           onClick={onClose}

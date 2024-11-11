@@ -77,7 +77,7 @@ function ForgotPassword(props) {
 
       if (json.success) {
         props.handleAlert("Password reset Successfully!", "success");
-        navigate("/signin");
+        navigate("/");
       } else {
         props.handleAlert(json.message, "danger");
       }
