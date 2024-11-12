@@ -5,15 +5,17 @@ import Input from "../components/Input";
 import Button from "../components/Button";
 
 function AdminProfile(props) {
+  // State to store user data
   const [user, setUser] = useState({});
   const [data, setData] = useState({
     name: "",
     email: "",
-    profilePicture: "",
     bio: "",
   });
+  // Flag to toggle edit mode
   const [disabled, setDisabled] = useState(true);
 
+  // Reset progress bar after loading
   useEffect(() => {
     props.setProgress(100);
     const timer = setTimeout(() => {
@@ -22,6 +24,7 @@ function AdminProfile(props) {
     return () => clearTimeout(timer);
   }, [props.setProgress]);
 
+  // Fetch user data on mount
   useEffect(() => {
     const getUser = async () => {
       try {
@@ -35,7 +38,7 @@ function AdminProfile(props) {
         const userData = await response.json();
         setUser(userData);
         setData({
-          // Update data state here
+          // Initialize data state with user data
           name: userData.name,
           email: userData.email,
           bio: userData.bio,
@@ -47,27 +50,27 @@ function AdminProfile(props) {
     getUser();
   }, []);
 
+  // Toggle edit mode
   const editProfile = () => {
     setDisabled(false);
   };
 
+  // Handle save button click
   const handleSave = async (e) => {
     e.preventDefault();
 
-    // Check if name is valid
+    // Validate input data
     if (!data.name || data.name.length < 3) {
       props.handleAlert("Please enter valid name.", "danger");
       return;
     }
 
-    // Check email pattern
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(data.email)) {
       props.handleAlert("Please enter valid email format.", "danger");
       return;
     }
 
-    // Check bio is valid
     if (!data.bio || data.bio.length < 10) {
       props.handleAlert(
         "Bio length should be at least 10 characters.",
@@ -77,6 +80,7 @@ function AdminProfile(props) {
     }
 
     try {
+      // Update user profile
       const response = await fetch(
         `http://localhost:5000/api/updateprofile/updateadmin/${user._id}`,
         {
@@ -110,6 +114,7 @@ function AdminProfile(props) {
     }
   };
 
+  // Handle input changes
   const onChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };

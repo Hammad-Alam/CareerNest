@@ -3,6 +3,7 @@ import DashboardCard from "../components/DashboardCard";
 import { Briefcase, User, AlertCircle, Tag } from "lucide-react";
 
 function AdminDashboard(props) {
+  // Reset progress bar after loading
   useEffect(() => {
     props.setProgress(100);
     const timer = setTimeout(() => {
@@ -11,11 +12,14 @@ function AdminDashboard(props) {
     return () => clearTimeout(timer);
   }, [props.setProgress]);
 
+  // State to store dashboard statistics
   const [dashboardStats, setDashboardStats] = useState({});
 
+  // Fetch dashboard statistics on mount
   useEffect(() => {
     const getStats = async () => {
       try {
+        // API endpoint to fetch dashboard statistics
         const response = await fetch(
           "http://localhost:5000/api/dashboardstats/admin",
           {
@@ -34,7 +38,7 @@ function AdminDashboard(props) {
       }
     };
     getStats();
-  });
+  }, []); // Empty dependency array ensures it runs only once
 
   return (
     <div className="mt-5">
@@ -42,6 +46,7 @@ function AdminDashboard(props) {
         Dashboard
       </h1>
       <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 justify-center items-center">
+        {/* Dashboard cards */}
         <DashboardCard
           icon={<Briefcase size={20} />}
           heading={"Total Job Postings"}

@@ -5,6 +5,7 @@ import Input from "../components/Input";
 import Button from "../components/Button";
 
 function UserProfile(props) {
+  // State to store user data
   const [user, setUser] = useState({});
   const [data, setData] = useState({
     name: "",
@@ -13,8 +14,10 @@ function UserProfile(props) {
     skills: [""],
     experience: "",
   });
+  // Flag to toggle edit mode
   const [disabled, setDisabled] = useState(true);
 
+  // Reset progress bar after loading
   useEffect(() => {
     props.setProgress(100);
     const timer = setTimeout(() => {
@@ -23,6 +26,7 @@ function UserProfile(props) {
     return () => clearTimeout(timer);
   }, [props.setProgress]);
 
+  // Fetch user data on mount
   useEffect(() => {
     const getUser = async () => {
       try {
@@ -36,7 +40,7 @@ function UserProfile(props) {
         const userData = await response.json();
         setUser(userData);
         setData({
-          // Update data state here
+          // Initialize data state with user data
           name: userData.name,
           email: userData.email,
           bio: userData.bio,
@@ -50,27 +54,27 @@ function UserProfile(props) {
     getUser();
   }, []);
 
+  // Toggle edit mode
   const editProfile = () => {
     setDisabled(false);
   };
 
+  // Handle save button click
   const handleSave = async (e) => {
     e.preventDefault();
 
-    // Check if name is valid
+    // Validate input data
     if (!data.name || data.name.length < 3) {
       props.handleAlert("Please enter valid name.", "danger");
       return;
     }
 
-    // Check email pattern
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(data.email)) {
       props.handleAlert("Please enter valid email format.", "danger");
       return;
     }
 
-    // Check bio is valid
     if (!data.bio || data.bio.length < 10) {
       props.handleAlert(
         "Bio length should be at least 10 characters.",
@@ -80,6 +84,7 @@ function UserProfile(props) {
     }
 
     try {
+      // Update user profile
       const response = await fetch(
         `http://localhost:5000/api/updateprofile/updateuser/${user._id}`,
         {
@@ -115,6 +120,7 @@ function UserProfile(props) {
     }
   };
 
+  // Handle input changes
   const onChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };

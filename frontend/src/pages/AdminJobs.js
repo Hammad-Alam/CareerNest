@@ -5,10 +5,12 @@ import AddJob from "../components/AddJob";
 import UpdateJob from "../components/UpdateJob";
 
 function AdminJobs(props) {
+  // State to manage form visibility
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [showUpdateForm, setShowUpdateForm] = useState(false);
   const [jobId, setJobId] = useState(null);
 
+  // Reset progress bar after loading
   useEffect(() => {
     props.setProgress(100);
     const timer = setTimeout(() => {
@@ -17,6 +19,7 @@ function AdminJobs(props) {
     return () => clearTimeout(timer);
   }, [props.setProgress]);
 
+  // Callback for form submission
   const handleFormSubmission = () => {
     setIsFormOpen(false);
     setShowUpdateForm(false);
@@ -24,6 +27,7 @@ function AdminJobs(props) {
 
   return (
     <>
+      {/* Add job button */}
       <div className="mr-auto -mt-14 md:mr-0 md:ml-auto md:mt-10 my-5">
         {!isFormOpen && !showUpdateForm ? (
           <Button text={"Add Jobs"} onClick={() => setIsFormOpen(true)} />
@@ -31,6 +35,8 @@ function AdminJobs(props) {
           ""
         )}
       </div>
+
+      {/* Conditional rendering of job table, add job form, or update job form */}
       {showUpdateForm ? (
         <UpdateJob
           handleFormSubmission={handleFormSubmission}

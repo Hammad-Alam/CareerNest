@@ -6,12 +6,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 const UserJobs = (props) => {
+  // State to store job listings
   const [jobs, setJobs] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredJobs, setFilteredJobs] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
-  const [selectedJob, setSelectedJob] = useState(null); // State to track selected job
+  // State to track selected job for detail view
+  const [selectedJob, setSelectedJob] = useState(null);
 
+  // Fetch job listings on mount
   useEffect(() => {
     const getJobs = async () => {
       try {
@@ -36,6 +39,7 @@ const UserJobs = (props) => {
     getJobs();
   }, []);
 
+  // Handle search query submission
   const handleSearch = async (e) => {
     setIsSearching(true);
     try {
@@ -66,12 +70,12 @@ const UserJobs = (props) => {
     }
   };
 
-  // Function to open JobDetail with selected job
+  // Open job detail view
   const openJobDetail = (job) => {
     setSelectedJob(job);
   };
 
-  // Function to close JobDetail
+  // Close job detail view
   const closeJobDetail = () => {
     setSelectedJob(null);
   };
