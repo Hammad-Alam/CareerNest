@@ -1,12 +1,13 @@
 import React from "react";
-import AOS from "aos";
+import AOS from "aos"; // Import AOS library for animations
 import "aos/dist/aos.css";
 AOS.init();
 
 function Alert(props) {
+  // Capitalize the first letter of the alert type (e.g., "success" -> "Success")
   const capitalize = (word) => {
     if (word === "danger") {
-      word = "error";
+      word = "error"; // Replace "danger" with "error" for consistency
     }
     const lower = word.toLowerCase();
     return lower.charAt(0).toUpperCase() + lower.slice(1);
@@ -30,6 +31,7 @@ function Alert(props) {
                 : ""
             }`}
         >
+          {/* Display capitalized alert type and message */}
           <strong>{capitalize(props.alert.type)}</strong>: {props.alert.message}
         </div>
       )}

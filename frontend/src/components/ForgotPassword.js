@@ -7,13 +7,17 @@ import AuthMessage from "./AuthMessage";
 import Password from "./Password";
 
 function ForgotPassword(props) {
+  // Initialize state for user credentials
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
     cnfpassword: "",
   });
+
+  // Initialize navigation hook
   let navigate = useNavigate();
 
+  // Set progress to 100% on component mount and reset after 1 second
   useEffect(() => {
     props.setProgress(100);
     const timer = setTimeout(() => {
@@ -22,10 +26,11 @@ function ForgotPassword(props) {
     return () => clearTimeout(timer);
   }, [props.setProgress]);
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Check if all fields are filled
+    // Check for empty fields
     if (
       !credentials.email ||
       !credentials.password ||
@@ -35,14 +40,14 @@ function ForgotPassword(props) {
       return;
     }
 
-    // Email validation
+    // Validate email format
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailPattern.test(credentials.email)) {
       props.handleAlert("Invalid email.", "danger");
       return;
     }
 
-    // Password validation
+    // Validate password format (8+ chars, uppercase, lowercase, numbers)
     const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
     if (!passwordPattern.test(credentials.password)) {
       props.handleAlert(
@@ -58,6 +63,7 @@ function ForgotPassword(props) {
       return;
     }
 
+    // Send password reset request to server
     try {
       const response = await fetch(
         "http://localhost:5000/api/auth/forgotpassword",
@@ -75,9 +81,10 @@ function ForgotPassword(props) {
 
       const json = await response.json();
 
+      // Handle server response
       if (json.success) {
         props.handleAlert("Password reset Successfully!", "success");
-        navigate("/");
+        navigate("/"); // Redirect to homepage
       } else {
         props.handleAlert(json.message, "danger");
       }
@@ -87,6 +94,7 @@ function ForgotPassword(props) {
     }
   };
 
+  // Update credentials state on input change
   const onChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };

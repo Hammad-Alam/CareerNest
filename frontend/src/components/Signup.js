@@ -8,14 +8,18 @@ import { useNavigate } from "react-router-dom";
 import Password from "./Password";
 
 function Signup(props) {
+  // Initialize state for user credentials
   const [credentials, setCredentials] = useState({
     name: "",
     email: "",
     password: "",
     cnfpassword: "",
   });
+
+  // Initialize navigation hook
   let navigate = useNavigate();
 
+  // Set progress to 100% on component mount and reset after 1 second
   useEffect(() => {
     props.setProgress(100);
     const timer = setTimeout(() => {
@@ -24,10 +28,11 @@ function Signup(props) {
     return () => clearTimeout(timer);
   }, [props.setProgress]);
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Check if all fields are filled
+    // Check for empty fields
     if (
       !credentials.name ||
       !credentials.email ||
@@ -38,7 +43,7 @@ function Signup(props) {
       return;
     }
 
-    // Check password length and pattern
+    // Validate password format (8+ chars, uppercase, lowercase, numbers)
     const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
     if (!passwordPattern.test(credentials.password)) {
       props.handleAlert(
@@ -48,7 +53,7 @@ function Signup(props) {
       return;
     }
 
-    // Check email pattern
+    // Validate email format
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(credentials.email)) {
       props.handleAlert("Please enter valid email format.", "danger");
@@ -61,7 +66,7 @@ function Signup(props) {
       return;
     }
 
-    // Proceed with API call
+    // Send registration request to server
     try {
       const response = await fetch(
         "http://localhost:5000/api/auth/createuser",
@@ -80,6 +85,7 @@ function Signup(props) {
 
       const json = await response.json();
 
+      // Handle server response
       if (json.success) {
         localStorage.setItem("token", json.authToken);
         props.handleAlert("Sign up successfully!", "success");
@@ -93,6 +99,7 @@ function Signup(props) {
     }
   };
 
+  // Update credentials state on input change
   const onChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };

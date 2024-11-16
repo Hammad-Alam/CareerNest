@@ -3,12 +3,16 @@ import AuthHeading from "./AuthHeading";
 import Password from "./Password";
 
 function ChangePassword(props) {
+  // Initialize state for new password credentials
   const [credentials, setCredentials] = useState({
     newPassword: "",
     newCnfPassword: "",
   });
+
+  // Initialize state for user data
   const [user, setUser] = useState({});
 
+  // Set progress to 100% on component mount and reset after 1 second
   useEffect(() => {
     props.setProgress(100);
     const timer = setTimeout(() => {
@@ -17,6 +21,7 @@ function ChangePassword(props) {
     return () => clearTimeout(timer);
   }, [props.setProgress]);
 
+  // Fetch user data on component mount
   useEffect(() => {
     const getUser = async () => {
       try {
@@ -36,16 +41,15 @@ function ChangePassword(props) {
     getUser();
   }, []);
 
+  // Handle form submission
   const handleSubmit = async (e) => {
-    // e.preventDefault();
-
-    // Check if all fields are filled
+    // Check for empty fields
     if (!credentials.newPassword || !credentials.newCnfPassword) {
       props.handleAlert("Please fill in all fields.", "danger");
       return;
     }
 
-    // Password validation
+    // Validate password format (8+ chars, uppercase, lowercase, numbers)
     const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
     if (!passwordPattern.test(credentials.newPassword)) {
       props.handleAlert(
@@ -61,6 +65,7 @@ function ChangePassword(props) {
       return;
     }
 
+    // Send password change request to server
     try {
       const response = await fetch(
         `http://localhost:5000/api/auth/changepassword/${user._id}`,
@@ -78,6 +83,7 @@ function ChangePassword(props) {
 
       const json = await response.json();
 
+      // Handle server response
       if (json.user) {
         props.handleAlert("Password changed Successfully!", "success");
       } else {
@@ -89,10 +95,13 @@ function ChangePassword(props) {
     }
   };
 
+  // Update credentials state on input change
   const onChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
+
   return (
+    // Change password form container
     <div
       className="mx-2 xsm:mx-auto justify-center items-center text-center my-4 md:my-auto xsm:w-3/4 sm:w-1/2 lg:w-1/3 xl:w-1/4 rounded-xl border-2 border-gray-300"
       style={{
@@ -112,6 +121,7 @@ function ChangePassword(props) {
         label="Confirm New Password"
         onChange={onChange}
       />
+      {/* Submit button */}
       <button
         onClick={handleSubmit}
         className="bg-gray-700 w-[190px] mt-4 mb-8 py-1 rounded-lg text-white mx-auto hover:bg-gray-600 

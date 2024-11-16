@@ -8,12 +8,16 @@ import AuthMessage from "./AuthMessage";
 import Password from "./Password";
 
 function Signin(props) {
+  // Initialize state for user credentials
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
   });
+
+  // Initialize navigation hook
   let navigate = useNavigate();
 
+  // Set progress to 100% on component mount and reset after 1 second
   useEffect(() => {
     props.setProgress(100);
     const timer = setTimeout(() => {
@@ -22,16 +26,17 @@ function Signin(props) {
     return () => clearTimeout(timer);
   }, [props.setProgress]);
 
+  // Handle form submission
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Reload the page
+    e.preventDefault(); // Prevent page reload
 
-    // Check if all fields are filled
+    // Check for empty fields
     if (!credentials.email || !credentials.password) {
       props.handleAlert("Please fill in all fields.", "danger");
       return;
     }
 
-    // Proceed to API Call
+    // Send login request to server
     try {
       const response = await fetch("http://localhost:5000/api/auth/login", {
         method: "POST",
@@ -45,14 +50,19 @@ function Signin(props) {
       });
 
       const json = await response.json();
-      if (json.success && credentials.email === "hammadalam115@gmail.com") {
-        localStorage.setItem("token", json.authToken);
-        props.handleAlert("Logged in Successfully!", "success");
-        navigate("/admin-profile");
-      } else if (json.success) {
-        localStorage.setItem("token", json.authToken);
-        props.handleAlert("Logged in Successfully!", "success");
-        navigate("/user-profile/jobs");
+
+      // Handle server response
+      if (json.success) {
+        // Check for admin access
+        if (credentials.email === "hammadalam115@gmail.com") {
+          localStorage.setItem("token", json.authToken);
+          props.handleAlert("Logged in Successfully!", "success");
+          navigate("/admin-profile");
+        } else {
+          localStorage.setItem("token", json.authToken);
+          props.handleAlert("Logged in Successfully!", "success");
+          navigate("/user-profile/jobs");
+        }
       } else {
         props.handleAlert("Please enter correct credentials.", "danger");
       }
@@ -62,6 +72,7 @@ function Signin(props) {
     }
   };
 
+  // Update credentials state on input change
   const onChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
@@ -91,9 +102,9 @@ function Signin(props) {
       />
       <span
         onClick={() => navigate("/forgotpassword")}
-        className=" text-blue-600 cursor-pointer font-semibold text-sm"
+        className="text-blue-600 cursor-pointer font-semibold text-sm"
       >
-        Forogt Password?
+        Forgot Password?
       </span>
       <AuthButton
         text={"Sign in"}
