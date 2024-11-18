@@ -4,6 +4,7 @@ import { faArrowsRotate } from "@fortawesome/free-solid-svg-icons";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import Spinner from "./Spinner";
+import { BACKEND_URI } from "../config";
 
 const JobsTable = (props) => {
   const [jobs, setJobs] = useState([]);
@@ -12,16 +13,13 @@ const JobsTable = (props) => {
   const getJobs = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(
-        "http://localhost:5000/api/job/fetchalljobs",
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "auth-token": localStorage.getItem("token"),
-          },
-        }
-      );
+      const response = await fetch(`${BACKEND_URI}/api/job/fetchalljobs`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": localStorage.getItem("token"),
+        },
+      });
 
       const data = await response.json();
       setJobs(data);
@@ -46,7 +44,7 @@ const JobsTable = (props) => {
   const handleDelete = async (jobId) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/job/deletejob/${jobId}`,
+        `${BACKEND_URI}/api/job/deletejob/${jobId}`,
         {
           method: "DELETE",
           headers: {

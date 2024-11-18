@@ -3,6 +3,7 @@ import AuthHeading from "./AuthHeading";
 import Input from "./Input";
 import Textarea from "./TextArea";
 import Button from "./Button";
+import { BACKEND_URI } from "../config";
 
 function AddJob(props) {
   const [data, setData] = useState({
@@ -74,7 +75,7 @@ function AddJob(props) {
 
     // Proceed with API Call
     try {
-      const response = await fetch("http://localhost:5000/api/job/createjob", {
+      const response = await fetch(`${BACKEND_URI}/api/job/createjob`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

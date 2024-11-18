@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import DashboardCard from "../components/DashboardCard";
 import { Briefcase, User, AlertCircle, Tag } from "lucide-react";
+import { BACKEND_URI } from "../config";
 
 function AdminDashboard(props) {
   // Reset progress bar after loading
@@ -21,7 +22,7 @@ function AdminDashboard(props) {
       try {
         // API endpoint to fetch dashboard statistics
         const response = await fetch(
-          "http://localhost:5000/api/dashboardstats/admin",
+          `${BACKEND_URI}/api/dashboardstats/admin`,
           {
             method: "GET",
             headers: {

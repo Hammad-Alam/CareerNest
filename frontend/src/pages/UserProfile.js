@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import Input from "../components/Input";
 import Button from "../components/Button";
+import { BACKEND_URI } from "../config";
 
 function UserProfile(props) {
   // State to store user data
@@ -30,7 +31,7 @@ function UserProfile(props) {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/auth/getuser", {
+        const response = await fetch(`${BACKEND_URI}/api/auth/getuser`, {
           method: "GET",
           headers: {
             "auth-token": localStorage.getItem("token"),
@@ -86,7 +87,7 @@ function UserProfile(props) {
     try {
       // Update user profile
       const response = await fetch(
-        `http://localhost:5000/api/updateprofile/updateuser/${user._id}`,
+        `${BACKEND_URI}/api/updateprofile/updateuser/${user._id}`,
         {
           method: "PUT",
           headers: {

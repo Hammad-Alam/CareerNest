@@ -5,6 +5,7 @@ import Logo from "../assets/logo.PNG";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faFileContract } from "@fortawesome/free-solid-svg-icons";
 import { LayoutDashboard, Briefcase, User, LogOut, Lock } from "lucide-react";
+import { BACKEND_URI } from "../config";
 
 function Sidebar({ role, handleLogout }) {
   const [user, setUser] = useState({});
@@ -14,7 +15,7 @@ function Sidebar({ role, handleLogout }) {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/auth/getuser", {
+        const response = await fetch(`${BACKEND_URI}/api/auth/getuser`, {
           method: "GET",
           headers: {
             "auth-token": localStorage.getItem("token"),

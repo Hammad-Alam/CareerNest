@@ -5,6 +5,7 @@ import Input from "./Input";
 import AuthButton from "./AuthButton";
 import AuthMessage from "./AuthMessage";
 import Password from "./Password";
+import { BACKEND_URI } from "../config";
 
 function ForgotPassword(props) {
   // Initialize state for user credentials
@@ -65,19 +66,16 @@ function ForgotPassword(props) {
 
     // Send password reset request to server
     try {
-      const response = await fetch(
-        "http://localhost:5000/api/auth/forgotpassword",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: credentials.email,
-            password: credentials.password,
-          }),
-        }
-      );
+      const response = await fetch(`${BACKEND_URI}/api/auth/forgotpassword`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: credentials.email,
+          password: credentials.password,
+        }),
+      });
 
       const json = await response.json();
 

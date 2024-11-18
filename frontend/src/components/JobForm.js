@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import AuthHeading from "./AuthHeading";
 import Input from "./Input";
 import Button from "./Button";
+import { BACKEND_URI } from "../config";
 
 function JobForm(props) {
   const [data, setData] = useState({
@@ -66,7 +67,7 @@ function JobForm(props) {
     // Proceed with API Call
     try {
       const response = await fetch(
-        "http://localhost:5000/api/application/createapplication",
+        `${BACKEND_URI}/api/application/createapplication`,
         {
           method: "POST",
           headers: {

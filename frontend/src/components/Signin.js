@@ -6,6 +6,7 @@ import Input from "./Input";
 import AuthButton from "./AuthButton";
 import AuthMessage from "./AuthMessage";
 import Password from "./Password";
+import { BACKEND_URI } from "../config";
 
 function Signin(props) {
   // Initialize state for user credentials
@@ -38,7 +39,7 @@ function Signin(props) {
 
     // Send login request to server
     try {
-      const response = await fetch("http://localhost:5000/api/auth/login", {
+      const response = await fetch(`${BACKEND_URI}/api/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

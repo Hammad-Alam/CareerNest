@@ -4,6 +4,7 @@ import JobDetail from "../components/JobDetail"; // Import JobDetail component
 import Spinner from "../components/Spinner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { BACKEND_URI } from "../config";
 
 const UserJobs = (props) => {
   // State to store job listings
@@ -18,16 +19,13 @@ const UserJobs = (props) => {
   useEffect(() => {
     const getJobs = async () => {
       try {
-        const response = await fetch(
-          "http://localhost:5000/api/job/fetchalljobs",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              "auth-token": localStorage.getItem("token"),
-            },
-          }
-        );
+        const response = await fetch(`${BACKEND_URI}/api/job/fetchalljobs`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "auth-token": localStorage.getItem("token"),
+          },
+        });
 
         const data = await response.json();
         setJobs(data);
@@ -44,7 +42,7 @@ const UserJobs = (props) => {
     setIsSearching(true);
     try {
       const response = await fetch(
-        `http://localhost:5000/api/job/searchjob/${searchQuery}`,
+        `${BACKEND_URI}/api/job/searchjob/${searchQuery}`,
         {
           method: "GET",
           headers: {

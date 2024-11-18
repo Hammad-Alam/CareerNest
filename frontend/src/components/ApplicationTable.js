@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowsRotate } from "@fortawesome/free-solid-svg-icons";
 import Spinner from "./Spinner";
+import { BACKEND_URI } from "../config";
 
 const ApplicationTable = (props) => {
   const [applications, setApplications] = useState([]);
@@ -11,7 +12,7 @@ const ApplicationTable = (props) => {
     setIsLoading(true);
     try {
       const response = await fetch(
-        "http://localhost:5000/api/application/fetchallapplication",
+        `${BACKEND_URI}/api/application/fetchallapplication`,
         {
           method: "GET",
           headers: {

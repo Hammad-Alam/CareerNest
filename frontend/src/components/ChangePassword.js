@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import AuthHeading from "./AuthHeading";
 import Password from "./Password";
+import { BACKEND_URI } from "../config";
 
 function ChangePassword(props) {
   // Initialize state for new password credentials
@@ -25,7 +26,7 @@ function ChangePassword(props) {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/auth/getuser", {
+        const response = await fetch(`${BACKEND_URI}/api/auth/getuser`, {
           method: "GET",
           headers: {
             "auth-token": localStorage.getItem("token"),

@@ -6,6 +6,7 @@ import AuthButton from "./AuthButton";
 import AuthMessage from "./AuthMessage";
 import { useNavigate } from "react-router-dom";
 import Password from "./Password";
+import { BACKEND_URI } from "../config";
 
 function Signup(props) {
   // Initialize state for user credentials
@@ -68,20 +69,17 @@ function Signup(props) {
 
     // Send registration request to server
     try {
-      const response = await fetch(
-        "http://localhost:5000/api/auth/createuser",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: credentials.name,
-            email: credentials.email,
-            password: credentials.password,
-          }),
-        }
-      );
+      const response = await fetch(`${BACKEND_URI}/api/auth/createuser`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: credentials.name,
+          email: credentials.email,
+          password: credentials.password,
+        }),
+      });
 
       const json = await response.json();
 

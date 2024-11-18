@@ -3,6 +3,7 @@ import AuthHeading from "./AuthHeading";
 import Input from "./Input";
 import Textarea from "./TextArea";
 import Button from "./Button";
+import { BACKEND_URI } from "../config";
 
 function UpdateJob(props) {
   const [data, setData] = useState({
@@ -27,7 +28,7 @@ function UpdateJob(props) {
       if (jobId) {
         try {
           const response = await fetch(
-            `http://localhost:5000/api/job/getjob/${jobId}`,
+            `${BACKEND_URI}/api/job/getjob/${jobId}`,
             {
               method: "GET",
               headers: {
@@ -53,7 +54,7 @@ function UpdateJob(props) {
     // Validation logic
     try {
       const response = await fetch(
-        `http://localhost:5000/api/job/updatejob/${jobId}`,
+        `${BACKEND_URI}/api/job/updatejob/${jobId}`,
         {
           method: "PUT",
           headers: {
