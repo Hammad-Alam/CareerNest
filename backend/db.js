@@ -6,12 +6,12 @@ const path = require("path"); // Path manipulation utility
 dotenv.config({ path: path.join(__dirname, "./config.env") });
 
 // Retrieve MongoDB connection URI from environment variables
-const MONGO_URI = process.env.MONGO_URI;
+const mongoURI = process.env.DATABASE;
 
 const connectToMongo = async () => {
   try {
     // Attempt to connect to MongoDB using mongoose
-    await mongoose.connect(MONGO_URI);
+    await mongoose.connect(mongoURI);
     console.log("Connected to MongoDB Successfully!");
   } catch (error) {
     // Handle connection errors

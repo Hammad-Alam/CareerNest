@@ -1,3 +1,1 @@
-const response = await fetch(
-  `${process.env.REACT_APP_BACKEND_URL}/api/endpoint`
-);
+export const BACKEND_URI = process.env.REACT_APP_BACKEND_URI;

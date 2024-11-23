@@ -4,10 +4,8 @@
   "description": "Career Nest is an online Job Portal - A nurturing platform for career and growth",
   "main": "index.js",
   "scripts": {
-  "start": "node index.js",
-  "dev": "nodemon index.js",
-  "test": "echo \"Error: no test specified\" && exit 1"
-},
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
